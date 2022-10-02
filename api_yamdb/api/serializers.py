@@ -1,11 +1,9 @@
+import api.views
 from django.db.models import Avg
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-
-from reviews.models import (Comment, Review, Title, Genre, Category, User)
-import api.views
+from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -87,12 +85,11 @@ class SignUpSerializer(serializers.ModelSerializer):
         fields = ['username', 'email']
 
     def create(self, validated_data):
-        obj = User.objects.create_user(**validated_data)
         api.views.send_message(
             validated_data['email'],
             validated_data['username']
         )
-        return obj
+        return User.objects.create_user(**validated_data)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

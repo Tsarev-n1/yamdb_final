@@ -1,24 +1,22 @@
-from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
-from rest_framework import viewsets, filters, permissions, status
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
-from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken
+from reviews.models import Category, Genre, Review, Title, User, UserAuth
 
-from reviews.models import Title, Category, Genre, Review, User, UserAuth
-from .serializers import (
-    TitleSerializer, CategorySerializer,
-    GenreSerializer, CommentSerializer, ReviewSerializer, GetTokenSerializer,
-    SignUpSerializer, UserProfileSerializer, UserSerializer
-)
-from .mixins import ViewDeleteSet
-from .permissions import (
-    IsAdminOrReadOnly, IsAdminModeratorOwnerOrReadOnly, IsAdmin
-)
 from .filters import TitleFilter
+from .mixins import ViewDeleteSet
+from .permissions import (IsAdmin, IsAdminModeratorOwnerOrReadOnly,
+                          IsAdminOrReadOnly)
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, GetTokenSerializer,
+                          ReviewSerializer, SignUpSerializer, TitleSerializer,
+                          UserProfileSerializer, UserSerializer)
 
 
 class GenreViewSet(ViewDeleteSet):
