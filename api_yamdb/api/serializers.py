@@ -1,8 +1,9 @@
-import api.views
 from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+
+import api.views
 from reviews.models import Category, Comment, Genre, Review, Title, User
 
 
