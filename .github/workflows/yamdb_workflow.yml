@@ -36,9 +36,9 @@ jobs:
 
       - name: Авторизация Docker
         uses: docker/login-action@v1 
-          with:
-            username: ${{ secrets.DOCKER_USERNAME }} 
-            password: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }} 
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
       -name: Пуш образа в DockerHub
         uses: docker/build-push-action@v2 
