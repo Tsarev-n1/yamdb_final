@@ -28,25 +28,25 @@ jobs:
     runs-on: ubuntu-latest
     needs: tests
     steps:
-      - name: Проверка репозитория
-        uses: actions/checkout@v3
+    - name: Проверка репозитория
+      uses: actions/checkout@v3
 
-      - name: Вызов сборщика контейнеров
-        uses: docker/setup-buildx-action@v1
+    - name: Вызов сборщика контейнеров
+      uses: docker/setup-buildx-action@v1
 
-      - name: Авторизация Docker
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }} 
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Авторизация Docker
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }} 
+        password: ${{ secrets.DOCKER_PASSWORD }}
       
-      -name: Пуш образа в DockerHub
-        uses: docker/build-push-action@v2 
-          with:
-            push: true
-            context: api_yamdb/
-            file: ./api_yamdb/Dockerfile
-            tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+    -name: Пуш образа в DockerHub
+      uses: docker/build-push-action@v2 
+        with:
+          push: true
+          context: api_yamdb/
+          file: ./api_yamdb/Dockerfile
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
 
   deploy:
       runs-on: ubuntu-latest
