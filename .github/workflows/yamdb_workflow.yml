@@ -42,11 +42,11 @@ jobs:
       
     -name: Пуш образа в DockerHub
       uses: docker/build-push-action@v2 
-        with:
-          push: true
-          context: api_yamdb/
-          file: ./api_yamdb/Dockerfile
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+      with:
+        push: true
+        context: api_yamdb/
+        file: ./api_yamdb/Dockerfile
+        tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
 
   deploy:
       runs-on: ubuntu-latest
