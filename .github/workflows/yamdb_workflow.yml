@@ -24,7 +24,7 @@ jobs:
         run: |
           python -m flake8
 
-  build and push to dockerHub:
+  build_and_push_to_dockerHub:
     runs-on: ubuntu-latest
     needs: tests
     steps:
