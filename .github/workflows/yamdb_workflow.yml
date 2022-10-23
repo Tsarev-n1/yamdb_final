@@ -23,3 +23,50 @@ jobs:
       - name: Тесты flake8
         run: |
           python -m flake8
+
+  build and push to dockerHub:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Проверка репозитория
+        uses: actions/checkout@v3
+
+      - name: Вызов сборщика контейнеров
+        uses: docker/setup-buildx-action@v1
+
+      - name: Авторизация Docker
+        uses: docker/login-action@v1 
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }} 
+            password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      -name: Пуш образа в DockerHub
+        uses: docker/build-push-action@v2 
+          with:
+            push: true
+            context: api_yamdb/
+            file: ./api_yamdb/Dockerfile
+            tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+
+  deploy:
+      runs-on: ubuntu-latest
+      needs: build_and_push_to_docker_hub
+      steps:
+      - name: Удаленный вызов команд на деплой
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            sudo docker-compose stop
+            sudo docker-compose rm web
+            touch .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            sudo docker-compose up -d
