@@ -12,6 +12,7 @@ services:
     restart: always
     volumes:
       - /home/tsarev-dev/redoc.yaml:/app/static/redoc.yaml
+      
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
