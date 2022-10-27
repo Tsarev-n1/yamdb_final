@@ -11,6 +11,7 @@ services:
     image: caruov/yamdb_workflow:latest
     restart: always
     volumes:
+      - /home/tsarev-dev/redoc.yaml:/app/static/redoc.yaml
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
@@ -26,8 +27,6 @@ services:
 
     volumes:
       - /home/tsarev-dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
-
-      - ./redoc.yaml:/var/html/static/redoc.yaml
 
       - static_value:/var/html/static/
 
